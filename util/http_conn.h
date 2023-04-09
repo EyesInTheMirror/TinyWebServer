@@ -161,7 +161,8 @@ bool http_conn::read() {
         }
         m_read_idx += bytes_read;
     }
-    printf("request read:\n%s", m_read_buf);
+    printf("request read!\n");
+    //printf("request read:\n%s", m_read_buf);
     return true;
 }
 
