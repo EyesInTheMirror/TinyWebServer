@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "./util/sig.h"
-#include "./util/thread_pool.h"
+#include "./util/thread_pool_2.0.h"
 #include "./util/locker.h"
 #include "./util/http_conn.h"
 #include "./util/error_check.h"
@@ -52,9 +52,9 @@ int main(int argc, char* argv[]) {
     int ret;
 
     //线程池的创建
-    thread_pool<http_conn> *pool = nullptr;
+    mirror::thread_pool<http_conn> *pool = nullptr;
     try {
-        pool = new thread_pool<http_conn>();
+        pool = new mirror::thread_pool<http_conn>();
     }
     catch(...) {
         printf("error constructing pool!\n");

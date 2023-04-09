@@ -13,10 +13,12 @@
 
 namespace mirror {
 
+    const int MAX_REQUESTS = 10000;
+
     template<typename taskType>
     class thread_pool{
     public:
-        explicit thread_pool(unsigned int num = std::thread::hardware_concurrency(), int max = 10000);
+        explicit thread_pool(unsigned int num = std::thread::hardware_concurrency());
         ~thread_pool();
         bool append(taskType* task);
     private:
@@ -26,7 +28,7 @@ namespace mirror {
         std::queue<taskType*> task_queue;
 
         std::mutex mutex;
-        std::counting_semaphore<> sem;
+        std::counting_semaphore<MAX_REQUESTS> sem;
     };
 
     template<typename taskType>
@@ -56,7 +58,7 @@ namespace mirror {
     }
 
     template<typename taskType>
-    thread_pool<taskType>::thread_pool(unsigned int num, int max) :stop(false), max_task_num(max){
+    thread_pool<taskType>::thread_pool(unsigned int num) :stop(false), max_task_num(MAX_REQUESTS), sem(std::counting_semaphore<MAX_REQUESTS>(0)){
         for(int i = 0; i < num; ++i) {
             threads.emplace_back([this]{
                 while(!stop || !task_queue.empty()) {
